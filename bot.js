@@ -35,6 +35,8 @@ var options = {
 
 var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
+var mongoUri = process.env.mongodb_uri;
+var mongoStorage = require(__dirname + '/components/botkit_mongo_storage.js')({mongoUri: mongoUri});
 
 var controller = Botkit.facebookbot({
     verify_token: process.env.verify_token,
@@ -50,7 +52,8 @@ var controller = Botkit.facebookbot({
         exitOnError: false, // do not exit on handled exceptions
       }),
       require_delivery: true,
-      validate_requests: true
+      validate_requests: true,
+      storage: mongoStorage
 });
 
 var webserver = require(__dirname + '/components/express_webserver.js')(controller);
