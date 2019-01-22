@@ -53,7 +53,7 @@ var controller = Botkit.facebookbot({
         exitOnError: false, // do not exit on handled exceptions
       }),
       require_delivery: true,
-//       validate_requests: true,
+      validate_requests: true,
       storage: mongoStorage
 });
 
