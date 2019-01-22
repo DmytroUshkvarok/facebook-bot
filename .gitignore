@@ -1,2 +1,6 @@
 gitflow-installer.sh
 package-lock.json
+facebook-bot.code-workspace
+*.env
+
+logs/
