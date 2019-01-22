@@ -1,3 +1,6 @@
+// var env = require('node-env-file');
+// env(__dirname + '/.env');
+
 var winston = require('winston');
 
 var options = {
@@ -32,8 +35,8 @@ var options = {
 
 var Botkit = require('botkit');
 var debug = require('debug')('botkit:main');
-var mongoUri = process.env.mongodb_uri;
-var mongoStorage = require(__dirname + '/components/botkit_mongo_storage.js')({mongoUri: mongoUri});
+// var mongoUri = process.env.mongodb_uri;
+// var mongoStorage = require(__dirname + '/components/botkit_mongo_storage.js')({mongoUri: mongoUri});
 
 var controller = Botkit.facebookbot({
     verify_token: process.env.verify_token,
