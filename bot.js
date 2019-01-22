@@ -52,8 +52,8 @@ var controller = Botkit.facebookbot({
         exitOnError: false, // do not exit on handled exceptions
       }),
       require_delivery: true,
-      validate_requests: true,
-      storage: mongoStorage
+      validate_requests: true
+      // storage: mongoStorage
 });
 
 var webserver = require(__dirname + '/components/express_webserver.js')(controller);
