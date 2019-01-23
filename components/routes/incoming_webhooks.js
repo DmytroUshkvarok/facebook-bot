@@ -1,4 +1,4 @@
-var debug = require('debug')('botkit:incoming_webhooks');
+const debug = require('debug')('botkit:incoming_webhooks');
 
 module.exports = function(webserver, controller) {
 
@@ -11,7 +11,7 @@ module.exports = function(webserver, controller) {
         res.status(200);
         res.send('ok');
 
-        var bot = controller.spawn({});
+        const bot = controller.spawn({});
 
         // Now, pass the webhook into be processed
         controller.handleWebhookPayload(req, res, bot);

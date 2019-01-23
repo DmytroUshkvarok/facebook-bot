@@ -1,6 +1,6 @@
 module.exports = function(controller) {
 
-    var bot = controller.spawn({
+    const bot = controller.spawn({
     });
 
     controller.on('facebook_postback, message_received', function(bot, message) {
