@@ -1,4 +1,4 @@
-var db = require('monk');
+const db = require('monk');
 /**
  * botkit-storage-mongo - MongoDB driver for Botkit
  *
@@ -10,18 +10,18 @@ module.exports = function(config) {
     if (!config || !config.mongoUri)
         throw new Error('Need to provide mongo address.');
 
-    var Teams = db(config.mongoUri).get('teams'),
+    const Teams = db(config.mongoUri).get('teams'),
         Users = db(config.mongoUri).get('users'),
         Channels = db(config.mongoUri).get('channels');
 
-    var unwrapFromList = function(cb) {
+    const unwrapFromList = function(cb) {
         return function(err, data) {
             if (err) return cb(err);
             cb(null, data);
         };
     };
 
-    var storage = {
+    const storage = {
         teams: {
             get: function(id, cb) {
                 Teams.findOne({id: id}, unwrapFromList(cb));

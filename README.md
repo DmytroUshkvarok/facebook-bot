@@ -1,1 +1,1 @@
-Botkit Bot for Facebook
+Botkit Bot for Facebook from Dmytro Ushkvarok

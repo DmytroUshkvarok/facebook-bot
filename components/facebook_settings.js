@@ -1,4 +1,4 @@
-var debug = require('debug')('botkit:facebook_settings');
+const debug = require('debug')('botkit:facebook_settings');
 
 
 

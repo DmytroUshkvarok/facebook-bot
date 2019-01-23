@@ -1,23 +1,14 @@
-var express = require('express');
-var bodyParser = require('body-parser');
-var querystring = require('querystring');
-var debug = require('debug')('botkit:webserver');
+const express = require('express');
+const bodyParser = require('body-parser');
+const querystring = require('querystring');
+const debug = require('debug')('botkit:webserver');
 
 module.exports = function(controller, bot) {
 
 
-    var webserver = express();
+    const webserver = express();
     webserver.use(bodyParser.json());
     webserver.use(bodyParser.urlencoded({ extended: true }));
-
-    // import express middlewares that are present in /components/express_middleware
-    var normalizedPath = require("path").join(__dirname, "express_middleware");
-    require("fs").readdirSync(normalizedPath).forEach(function(file) {
-        require("./express_middleware/" + file)(webserver, controller);
-    });
-
-    webserver.use(express.static('public'));
-
 
     webserver.listen(process.env.PORT || 3000, null, function() {
 
@@ -26,7 +17,7 @@ module.exports = function(controller, bot) {
     });
 
     // import all the pre-defined routes that are present in /components/routes
-    var normalizedPath = require("path").join(__dirname, "routes");
+    const normalizedPath = require("path").join(__dirname, "routes");
     require("fs").readdirSync(normalizedPath).forEach(function(file) {
       require("./routes/" + file)(webserver, controller);
     });
