@@ -25,9 +25,3 @@ const webserver = require(__dirname + '/components/express_webserver.js')(contro
 require(__dirname + '/components/subscribe_events.js')(controller);
 require(__dirname + '/components/facebook_settings.js')(controller);
 require(__dirname + '/components/skills.js')(controller);
-
-
-
-
-
-
