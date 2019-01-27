@@ -15,6 +15,7 @@
     "dotenv": "^6.2.0",
     "express": "^4.14.0",
     "node-env-file": "^0.1.8",
+    "putty": "^1.0.1",
     "request": "^2.79.0",
     "winston": "^3.1.0",
     "wordfilter": "^0.2.6"

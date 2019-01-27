@@ -103,7 +103,7 @@ module.exports = function(controller) {
 
         } else if (typeof(message.payload) === 'string' && ~message.payload.indexOf('view_more')) {
 
-            const skuOfProduct = message.payload.slice(message.payload.indexOf(' ') + 1);
+            const skuOfProduct = message.payload.split(' ')[1];
             
             bby.products(`search=${skuOfProduct}`, {
                 format: 'json',
@@ -158,7 +158,7 @@ module.exports = function(controller) {
 
         } else if (typeof(message.payload) === 'string' && ~message.payload.indexOf('buy_product')) {
 
-            const skuOfProduct = message.payload.slice(message.payload.indexOf(' ') + 1);
+            const skuOfProduct = message.payload.split(' ')[1];
 
             bot.reply(message, {
                 'text': 'Please share your phone',
@@ -184,7 +184,7 @@ module.exports = function(controller) {
 
             if (~message.quick_reply.payload.indexOf('back_to_product')) {
 
-                const skuOfProduct = message.quick_reply.payload.slice(message.quick_reply.payload.indexOf(' ') + 1);
+                const skuOfProduct = message.quick_reply.payload.split(' ')[1];
             
                 bby.products(`search=${skuOfProduct}`, {
                     format: 'json',
@@ -353,13 +353,13 @@ module.exports = function(controller) {
                     "quick_replies": [
                         {
                             'content_type': 'text',
-                            'title': 'See previous page',
+                            'title': 'See previous',
                             'payload': `go_to_previous_page ${pageNumber}`,
                         },
                         backToMainMenuButton,
                         {
                             'content_type': 'text',
-                            'title': 'See next page',
+                            'title': 'See next',
                             'payload': `go_to_next_page ${pageNumber}`,
                         }
                     ]
