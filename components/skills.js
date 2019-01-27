@@ -353,13 +353,13 @@ module.exports = function(controller) {
                     "quick_replies": [
                         {
                             'content_type': 'text',
-                            'title': 'See previous page',
+                            'title': 'See previous',
                             'payload': `go_to_previous_page ${pageNumber}`,
                         },
                         backToMainMenuButton,
                         {
                             'content_type': 'text',
-                            'title': 'See next page',
+                            'title': 'See next',
                             'payload': `go_to_next_page ${pageNumber}`,
                         }
                     ]
