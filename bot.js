@@ -1,6 +1,3 @@
-const env = require('node-env-file');
-env(__dirname + '/.env');
-
 const Botkit = require('botkit');
 const debug = require('debug')('botkit:main');
 const winston = require('winston');
