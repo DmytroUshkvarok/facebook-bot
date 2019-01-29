@@ -6,7 +6,7 @@ mongoose.connect(`${process.env.mongodb_uri}`, {
     autoReconnect: true,
     useNewUrlParser: true,
     useCreateIndex: true,
-    dbName: 'fb-botkit-bot'
+    dbName: 'production-fb-bot'
   }).catch(err => console.log('Mongo connection error', err));
 
 module.exports = {mongoose};
