@@ -258,6 +258,15 @@ module.exports = function(controller) {
         } 
     });
 
+    controller.on('facebook_postback', function(bot, message) {
+        
+        if (typeof(message.payload) === 'string' && ~message.payload.indexOf('add_to_favourites')) {
+            
+            require('./db/favourites.js')(bot, message);
+        }
+
+    });
+
     controller.on('message_received', function(bot, message) {
 
         if (message.attachments && message.attachments[0].type == 'location') {
