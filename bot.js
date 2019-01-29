@@ -1,8 +1,6 @@
 const Botkit = require('botkit');
 const debug = require('debug')('botkit:main');
-const mongoUri = process.env.mongodb_uri;
 const winston = require('winston');
-const mongoStorage = require(__dirname + '/components/botkit_mongo_storage.js')({mongoUri: mongoUri});
 
 const controller = Botkit.facebookbot({
     verify_token: process.env.verify_token,
@@ -17,11 +15,13 @@ const controller = Botkit.facebookbot({
       ]
     }),
       require_delivery: true,
-      validate_requests: true,
-      storage: mongoStorage
+      validate_requests: true
 });
 
 const webserver = require(__dirname + '/components/express_webserver.js')(controller);
+require(__dirname + '/components/db/mongoose.js');
+
 require(__dirname + '/components/subscribe_events.js')(controller);
 require(__dirname + '/components/facebook_settings.js')(controller);
 require(__dirname + '/components/skills.js')(controller);
+
