@@ -1,5 +1,24 @@
 const Customer = require('./customer');
 
+const mainMenuButton = {
+    'content_type': 'text',
+    'title': 'To main menu',
+    'payload': 'main_menu',
+};
+
+const shopButton = {
+    'content_type': 'text',
+    'title': 'Go to shop',
+    'payload': 'shop',
+};
+
+const favouritesButton = {
+    'content_type': 'text',
+    'title': 'To favourites',
+    'payload': 'favourites',
+};
+
+
 module.exports = function(bot, payloadMessage) {
 
     const message = payloadMessage;
@@ -18,13 +37,16 @@ module.exports = function(bot, payloadMessage) {
 
             console.log(`New customer was successfully added to base.`);
 
-            return bot.reply(message, 'New customer profile was created. This product was added to your favourites');
+            return bot.reply(message, {
+                'text': 'New customer profile was created. This product was added to your favourites',
+                'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+            });
 
         } else {
 
             if (!customer.favourites) {
 
-                console.log(`This customer have no products in favourites. Adding first product.`);
+                console.log(`This customer have no products added to favourites. Adding first product.`);
         
                 customer.favourites = [`${payloadFavouriteSKU}`];
 
@@ -34,14 +56,20 @@ module.exports = function(bot, payloadMessage) {
 
                     console.log(`Customers favourites were successfully created with one product.`);
 
-                    return bot.reply(message, 'Added to favourites');
+                    return bot.reply(message, {
+                        'text': 'Added to favourites',
+                        'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+                    });
                 });
 
             } else {
         
                 if (~customer.favourites.indexOf(`${payloadFavouriteSKU}`)) {
         
-                    return bot.reply(message, `This product is already in favourites. have no reason to add one more.`);
+                    return bot.reply(message, {
+                        'text': `This product is already in favourites. have no reason to add one more.`,
+                        'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+                    });
 
                 } else {
         
@@ -52,7 +80,10 @@ module.exports = function(bot, payloadMessage) {
         
                         console.log(`Customers favourites were successfully updated.`);
 
-                        return bot.reply(message, 'Added to favourites');
+                        return bot.reply(message, {
+                            'text': 'Added to favourites',
+                            'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+                        });
                     });
                 }
             }
