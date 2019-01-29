@@ -40,7 +40,7 @@ module.exports = function(controller) {
     
     const showCatalogButton = {
         'content_type': 'text',
-        'title': 'Back to catalog',
+        'title': 'To catalog',
         'payload': 'back_to_catalog',
     };
 
@@ -256,6 +256,26 @@ module.exports = function(controller) {
                 });            
             }
         } 
+    });
+
+    controller.on('message_received', function(bot, message) {
+
+        if (message.quick_reply) {
+
+            if (message.quick_reply.payload === 'favourites') {
+
+                require('./db/favourites_show.js')(bot, message);
+            }
+        } 
+    });
+
+    controller.on('facebook_postback', function(bot, message) {
+        
+        if (typeof(message.payload) === 'string' && ~message.payload.indexOf('add_to_favourites')) {
+            
+            require('./db/favourites_write.js')(bot, message);
+        }
+
     });
 
     controller.on('message_received', function(bot, message) {
