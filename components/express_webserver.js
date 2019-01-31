@@ -1,29 +1,23 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const querystring = require('querystring');
-const debug = require('debug')('botkit:webserver');
+const express = require('express')
+const bodyParser = require('body-parser')
+const debug = require('debug')('botkit:webserver')
 
-module.exports = function(controller, bot) {
+module.exports = function (controller, bot) {
+  const webserver = express()
+  webserver.use(bodyParser.json())
+  webserver.use(bodyParser.urlencoded({ extended: true }))
 
+  webserver.listen(process.env.PORT || 3000, null, function () {
+    debug('Express webserver configured and listening at http://localhost:' + process.env.PORT || 3000)
+  })
 
-    const webserver = express();
-    webserver.use(bodyParser.json());
-    webserver.use(bodyParser.urlencoded({ extended: true }));
+  // import all the pre-defined routes that are present in /components/routes
+  const normalizedPath = require('path').join(__dirname, 'routes')
+  require('fs').readdirSync(normalizedPath).forEach(function (file) {
+    require('./routes/' + file)(webserver, controller)
+  })
 
-    webserver.listen(process.env.PORT || 3000, null, function() {
+  controller.webserver = webserver
 
-        debug('Express webserver configured and listening at http://localhost:' + process.env.PORT || 3000);
-
-    });
-
-    // import all the pre-defined routes that are present in /components/routes
-    const normalizedPath = require("path").join(__dirname, "routes");
-    require("fs").readdirSync(normalizedPath).forEach(function(file) {
-      require("./routes/" + file)(webserver, controller);
-    });
-
-    controller.webserver = webserver;
-
-    return webserver;
-
+  return webserver
 }

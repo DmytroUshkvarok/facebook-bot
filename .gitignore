@@ -1,6 +1,7 @@
 gitflow-installer.sh
 facebook-bot.code-workspace
 .env
+.eslintrc.json
 
 logs/
 node_modules/

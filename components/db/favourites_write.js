@@ -1,92 +1,78 @@
-const Customer = require('./customer');
+const Customer = require('./customer')
 
 const mainMenuButton = {
-    'content_type': 'text',
-    'title': 'To main menu',
-    'payload': 'main_menu',
-};
+  'content_type': 'text',
+  'title': 'To main menu',
+  'payload': 'main_menu'
+}
 
 const shopButton = {
-    'content_type': 'text',
-    'title': 'Go to shop',
-    'payload': 'shop',
-};
+  'content_type': 'text',
+  'title': 'Go to shop',
+  'payload': 'shop'
+}
 
 const favouritesButton = {
-    'content_type': 'text',
-    'title': 'To favourites',
-    'payload': 'favourites',
-};
+  'content_type': 'text',
+  'title': 'To favourites',
+  'payload': 'favourites'
+}
 
+module.exports = function (bot, payloadMessage) {
+  const message = payloadMessage
+  const msgId = message.sender.id
+  const payloadFavouriteSKU = message.payload.split(' ')[1]
 
-module.exports = function(bot, payloadMessage) {
+  Customer.findOne({ messenger_id: `${msgId}` }).exec(function (err, customer) {
+    if (err) return console.log(err)
 
-    const message = payloadMessage;
-    const msgId = message.sender.id;
-    const payloadFavouriteSKU = message.payload.split(' ')[1];
+    if (!customer) {
+      console.log(`No have customers with id ${msgId} in base. Adding new customer in base.`)
 
-    Customer.findOne({messenger_id: `${msgId}`}).exec(function(err, customer) {
+      Customer.create({ messenger_id: `${msgId}`, favourites: [`${payloadFavouriteSKU}`] })
 
-        if (err) return console.log(err);
+      console.log(`New customer was successfully added to base.`)
 
-        if (!customer) {
+      return bot.reply(message, {
+        'text': 'New customer profile was created. This product was added to your favourites',
+        'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+      })
+    } else {
+      if (!customer.favourites) {
+        console.log(`This customer have no products added to favourites. Adding first product.`)
 
-            console.log(`No have customers with id ${msgId} in base. Adding new customer in base.`);
+        customer.favourites = [`${payloadFavouriteSKU}`]
 
-            Customer.create({messenger_id: `${msgId}`, favourites: [`${payloadFavouriteSKU}`]});
+        return customer.save(function (err) {
+          if (err) return console.log(err)
 
-            console.log(`New customer was successfully added to base.`);
+          console.log(`Customers favourites were successfully created with one product.`)
+
+          return bot.reply(message, {
+            'text': 'Added to favourites',
+            'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+          })
+        })
+      } else {
+        if (~customer.favourites.indexOf(`${payloadFavouriteSKU}`)) {
+          return bot.reply(message, {
+            'text': `This product is already in favourites. have no reason to add one more.`,
+            'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+          })
+        } else {
+          customer.favourites.push(`${payloadFavouriteSKU}`)
+          return customer.save(function (err) {
+            if (err) return console.log(err)
+
+            console.log(`Customers favourites were successfully updated.`)
 
             return bot.reply(message, {
-                'text': 'New customer profile was created. This product was added to your favourites',
-                'quick_replies': [mainMenuButton, shopButton, favouritesButton]
-            });
-
-        } else {
-
-            if (!customer.favourites) {
-
-                console.log(`This customer have no products added to favourites. Adding first product.`);
-        
-                customer.favourites = [`${payloadFavouriteSKU}`];
-
-                return customer.save(function(err) {
-        
-                    if (err) return console.log(err);
-
-                    console.log(`Customers favourites were successfully created with one product.`);
-
-                    return bot.reply(message, {
-                        'text': 'Added to favourites',
-                        'quick_replies': [mainMenuButton, shopButton, favouritesButton]
-                    });
-                });
-
-            } else {
-        
-                if (~customer.favourites.indexOf(`${payloadFavouriteSKU}`)) {
-        
-                    return bot.reply(message, {
-                        'text': `This product is already in favourites. have no reason to add one more.`,
-                        'quick_replies': [mainMenuButton, shopButton, favouritesButton]
-                    });
-
-                } else {
-        
-                    customer.favourites.push(`${payloadFavouriteSKU}`);
-                    return customer.save(function(err) {
-        
-                        if (err) return console.log(err);
-        
-                        console.log(`Customers favourites were successfully updated.`);
-
-                        return bot.reply(message, {
-                            'text': 'Added to favourites',
-                            'quick_replies': [mainMenuButton, shopButton, favouritesButton]
-                        });
-                    });
-                }
-            }
+              'text': 'Added to favourites',
+              'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+            })
+          })
         }
-    });
-};
+      }
+    }
+  })
+}
