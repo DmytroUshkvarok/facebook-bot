@@ -11,7 +11,6 @@ module.exports = function (message) {
     customer.purchases[customer.purchases.length - 1].coordinates.longitude = customersLongitude
     return customer.save(function (err) {
       if (err) return console.log(err)
-
       console.log(`Customer's coordinates were successfully updated.`)
     })
   })
