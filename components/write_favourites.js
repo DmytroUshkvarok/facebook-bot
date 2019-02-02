@@ -1,4 +1,4 @@
-const Customer = require('./customer')
+const Customer = require('./db/customer_schema')
 
 const mainMenuButton = {
   'content_type': 'text',
@@ -18,8 +18,7 @@ const favouritesButton = {
   'payload': 'favourites'
 }
 
-module.exports = function (bot, payloadMessage) {
-  const message = payloadMessage
+module.exports = function (bot, message) {
   const msgId = message.sender.id
   const payloadFavouriteSKU = message.payload.split(' ')[1]
 

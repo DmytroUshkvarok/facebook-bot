@@ -117,8 +117,8 @@ module.exports = function (controller) {
             },
             {
               'type': 'postback',
-              'title': `Buy for ${productPrice} $`,
-              'payload': `buy_product ${skuOfProduct}`
+              'title': `Buy for ${productPrice}$`,
+              'payload': `buy_product ${skuOfProduct} ${productPrice}`
             }
           ]
 
@@ -134,7 +134,7 @@ module.exports = function (controller) {
       })
     } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('buy_product')) {
       const skuOfProduct = message.payload.split(' ')[1]
-
+      require('./write_purchases')(message);
       bot.reply(message, {
         'text': 'Please share your phone',
         'quick_replies': [
@@ -188,8 +188,8 @@ module.exports = function (controller) {
               },
               {
                 'type': 'postback',
-                'title': `Buy for ${productPrice} $`,
-                'payload': `buy_product ${skuOfProduct}`
+                'title': `Buy for ${productPrice}$`,
+                'payload': `buy_product ${skuOfProduct} ${productPrice}`
               }
             ]
 
@@ -210,13 +210,13 @@ module.exports = function (controller) {
   controller.on('message_received', function (bot, message) {
     if (message.quick_reply) {
       if (message.quick_reply.payload.length === 13 && message.quick_reply.payload[0] === '+') {
+        require('./fix_phone.js')(message);
         bot.reply(message, {
           'text': 'Please share your location for delivery',
           'quick_replies': [
             {
               'content_type': 'location'
-            }
-          ]
+            }, backToMainMenuButton]
         })
       }
     }
@@ -225,24 +225,34 @@ module.exports = function (controller) {
   controller.on('message_received', function (bot, message) {
     if (message.quick_reply) {
       if (message.quick_reply.payload === 'favourites') {
-        require('./db/favourites_show.js')(bot, message)
+        require('./show_favourites.js')(bot, message)
+      }
+    }
+  })
+
+  controller.on('message_received', function (bot, message) {
+    if (message.quick_reply) {
+      if (message.quick_reply.payload === 'purchases') {
+        require('./show_purchases_list.js')(bot, message)
       }
     }
   })
 
   controller.on('facebook_postback', function (bot, message) {
     if (typeof (message.payload) === 'string' && ~message.payload.indexOf('add_to_favourites')) {
-      require('./db/favourites_write.js')(bot, message)
+      require('./write_favourites.js')(bot, message)
+    }
+  })
+
+  controller.on('facebook_postback', function (bot, message) {
+    if (typeof (message.payload) === 'string' && ~message.payload.indexOf('see_details_of_purchase')) {
+      require('./show_purchase_details.js')(bot, message)
     }
   })
 
   controller.on('message_received', function (bot, message) {
     if (message.attachments && message.attachments[0].type === 'location') {
-      const customersLatitude = message.attachments[0].payload.coordinates.lat
-      const customersLongitude = message.attachments[0].payload.coordinates.long
-
-      console.log(`latitude: ${customersLatitude} longitude: ${customersLongitude}`)
-
+      require('./fix_coordinates.js')(message)
       bot.reply(message, {
         'text': 'Congratulations! Our courier will contact you within 2 hours',
         'quick_replies': [backToMainMenuButton, showCatalogButton]
@@ -292,8 +302,8 @@ module.exports = function (controller) {
               },
               {
                 'type': 'postback',
-                'title': `Buy for ${data.products[i].salePrice} $`,
-                'payload': `buy_product ${data.products[i].sku}`
+                'title': `Buy for ${data.products[i].salePrice}$`,
+                'payload': `buy_product ${data.products[i].sku} ${data.products[i].salePrice}`
               }
             ]
           }

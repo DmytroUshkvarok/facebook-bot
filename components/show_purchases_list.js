@@ -1,7 +1,7 @@
 const bbyApiKey = process.env.bby_api_key
 const bby = require('bestbuy')(bbyApiKey)
 
-const Customer = require('./customer')
+const Customer = require('./db/customer_schema')
 
 const mainMenuButton = {
   'content_type': 'text',
@@ -15,60 +15,66 @@ const shopButton = {
   'payload': 'shop'
 }
 
-module.exports = function (bot, payloadMessage) {
-  const message = payloadMessage
+module.exports = function (bot, message) {
   const msgId = message.sender.id
 
-  Customer.findOne({ messenger_id: `${msgId}` }).exec(function (err, customer) {
+  Customer.findOne({ messenger_id: `${msgId}` }, 'purchases').exec(function (err, customer) {
     if (err) return console.log(err)
 
     if (!customer) {
       console.log(`No have customers with id ${msgId} in base.`)
 
       return bot.reply(message, {
-        'text': `You have no customer's records in our base. To create a record add any product to favourites.`,
+        'text': `You have no customer's records in our base. To create a record please buy something.`,
         'quick_replies': [mainMenuButton, shopButton]
       })
     } else {
-      if (!customer.favourites) {
+      if (customer.purchases.length === 0) {
         return bot.reply(message, {
-          'text': `You have no products added to favourites. Add first to see someone.`,
+          'text': `You have no purchases. Buy something to see someone.`,
           'quick_replies': [mainMenuButton, shopButton]
         })
-      } else {
-        const arrayOfFavourites = customer.favourites
+      } else {        
+        const arrayOfProductsFromFinishedPurchases = [];        
+        const arrayOfFinishedPurchasesDates = [];        
+        customer.purchases.forEach(function(obj) {
+            if (obj.coordinates.latitude) {
+                arrayOfProductsFromFinishedPurchases.push(obj.product)
+                arrayOfFinishedPurchasesDates.push(obj.date)
+            }
+        })
+        if (!arrayOfFinishedPurchasesDates.length) {
+          return bot.reply(message, {
+            'text': `You have no finished purchases. Buy something to see someone.`,
+            'quick_replies': [mainMenuButton, shopButton]
+          })
+        }
         const objectToCreate = {}
         objectToCreate.type = 'template'
         objectToCreate.payload = {}
         objectToCreate.payload.template_type = 'generic'
         objectToCreate.payload.elements = []
 
-        arrayOfFavourites.forEach(function (favouriteSKU, i) {
+        arrayOfProductsFromFinishedPurchases.forEach(function (purchaseSKU, i) {
           if (i < 10) {
-            bby.products(`search=${favouriteSKU}`, {
+            bby.products(`search=${purchaseSKU}`, {
               'format': 'json',
-              'show': 'name,image,sku,salePrice'
+              'show': 'name,sku'
             }, function (err, data) {
               if (err) {
                 console.warn(err)
               }
-
+              
               const productName = data.products[0].name
-              const productImageURL = data.products[0].image
-
+              const purchaseTime = arrayOfFinishedPurchasesDates[i].toString().slice(0, 24)
               objectToCreate.payload.elements[i] = {}
               objectToCreate.payload.elements[i].title = productName
-              objectToCreate.payload.elements[i].image_url = productImageURL
+              objectToCreate.payload.elements[i].subtitle = purchaseTime
               objectToCreate.payload.elements[i].buttons = [
                 {
                   'type': 'postback',
-                  'title': 'View more',
-                  'payload': `view_more ${data.products[0].sku}`
-                },
-                {
-                  'type': 'postback',
-                  'title': `Buy for ${data.products[0].salePrice} $`,
-                  'payload': `buy_product ${data.products[0].sku}`
+                  'title': 'See details of deal',
+                  'payload': `see_details_of_purchase ${purchaseTime}`
                 }
               ]
             })
