@@ -8,6 +8,7 @@ const customerSchema = new Schema({
     required: true,
     unique: true
   },
+  invitations: [String],
   favourites: {
     type: [String]
   },

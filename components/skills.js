@@ -4,49 +4,52 @@ const bby = require('bestbuy')(bbyApiKey)
 module.exports = function (controller) {
   const mainMenu = {
     'text': 'MAIN MENU',
-    'quick_replies':
-            [{
-              'content_type': 'text',
-              'title': 'My purchases',
-              'payload': 'purchases'
-            },
-            {
-              'content_type': 'text',
-              'title': 'Shop',
-              'payload': 'shop'
-            },
-            {
-              'content_type': 'text',
-              'title': 'Favourites',
-              'payload': 'favourites'
-            },
-            {
-              'content_type': 'text',
-              'title': 'To invite a friend',
-              'payload': 'invitation'
-            }]
+    'quick_replies': [
+      {
+        'content_type': 'text',
+        'title': 'My purchases',
+        'payload': 'purchases'
+      },
+      {
+        'content_type': 'text',
+        'title': 'Shop',
+        'payload': 'shop'
+      },
+      {
+        'content_type': 'text',
+        'title': 'Favourites',
+        'payload': 'favourites'
+      },
+      {
+        'content_type': 'text',
+        'title': 'To invite a friend',
+        'payload': 'send_invitation'
+      }
+    ]
   }
-
   const backToMainMenuButton = {
     'content_type': 'text',
     'title': 'To main menu',
     'payload': 'main_menu'
   }
-
   const showCatalogButton = {
     'content_type': 'text',
     'title': 'To catalog',
     'payload': 'back_to_catalog'
   }
 
-  function showMainMenu (bot, message) {
-    bot.reply(message, mainMenu)
-  }
-
   controller.on('facebook_postback', function (bot, message) {
     if (message.payload === 'start_button_clicked') {
+      if (message.referral) {
+        require('./referal.js')(bot, message)
+      }
       showMainMenu(bot, message)
     }
+  })
+
+  controller.on('facebook_referral', function (bot, message) {
+    require('./referal.js')(bot, message)
+    showMainMenu(bot, message)
   })
 
   controller.on('facebook_postback', function (bot, message) {
@@ -60,21 +63,17 @@ module.exports = function (controller) {
       if (message.quick_reply.payload === 'main_menu') {
         showMainMenu(bot, message)
       }
-
       if (message.quick_reply.payload === 'shop') {
         showingCatalog(bot, message)
       }
-
       if (message.quick_reply.payload === 'back_to_catalog') {
         showingCatalog(bot, message)
       }
-
       if (~message.quick_reply.payload.indexOf('go_to_next_page')) {
         const number = +message.quick_reply.payload.split(' ')[1] + 1
 
         showingCatalog(bot, message, number)
       }
-
       if (~message.quick_reply.payload.indexOf('go_to_previous_page')) {
         const number = +message.quick_reply.payload.split(' ')[1] - 1
 
@@ -89,10 +88,7 @@ module.exports = function (controller) {
         format: 'json',
         show: 'name,image,longDescription,salePrice'
       }, function (err, data) {
-        if (err) {
-          console.warn(err)
-        }
-
+        if (err) console.warn(err)
         const createProductDetailsAttachment = function (data) {
           const objectToCreate = {}
           objectToCreate.type = 'template'
@@ -121,12 +117,9 @@ module.exports = function (controller) {
               'payload': `buy_product ${skuOfProduct} ${productPrice}`
             }
           ]
-
           return objectToCreate
         }
-
         const productDetailsAttachment = createProductDetailsAttachment(data)
-
         bot.reply(message, {
           'attachment': productDetailsAttachment,
           'quick_replies': [backToMainMenuButton, showCatalogButton]
@@ -134,7 +127,7 @@ module.exports = function (controller) {
       })
     } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('buy_product')) {
       const skuOfProduct = message.payload.split(' ')[1]
-      require('./write_purchases')(message);
+      require('./write_purchases')(message)
       bot.reply(message, {
         'text': 'Please share your phone',
         'quick_replies': [
@@ -160,10 +153,7 @@ module.exports = function (controller) {
           format: 'json',
           show: 'name,image,longDescription,salePrice'
         }, function (err, data) {
-          if (err) {
-            console.warn(err)
-          }
-
+          if (err) console.warn(err)
           const createProductDetailsAttachment = function (data) {
             const objectToCreate = {}
             objectToCreate.type = 'template'
@@ -192,10 +182,8 @@ module.exports = function (controller) {
                 'payload': `buy_product ${skuOfProduct} ${productPrice}`
               }
             ]
-
             return objectToCreate
           }
-
           const productDetailsAttachment = createProductDetailsAttachment(data)
 
           bot.reply(message, {
@@ -210,7 +198,7 @@ module.exports = function (controller) {
   controller.on('message_received', function (bot, message) {
     if (message.quick_reply) {
       if (message.quick_reply.payload.length === 13 && message.quick_reply.payload[0] === '+') {
-        require('./fix_phone.js')(message);
+        require('./fix_phone.js')(message)
         bot.reply(message, {
           'text': 'Please share your location for delivery',
           'quick_replies': [
@@ -224,8 +212,8 @@ module.exports = function (controller) {
 
   controller.on('message_received', function (bot, message) {
     if (message.quick_reply) {
-      if (message.quick_reply.payload === 'favourites') {
-        require('./show_favourites.js')(bot, message)
+      if (message.quick_reply.payload === 'send_invitation') {
+        require('./send_invitation.js')(bot, message)
       }
     }
   })
@@ -234,6 +222,14 @@ module.exports = function (controller) {
     if (message.quick_reply) {
       if (message.quick_reply.payload === 'purchases') {
         require('./show_purchases_list.js')(bot, message)
+      }
+    }
+  })
+
+  controller.on('message_received', function (bot, message) {
+    if (message.quick_reply) {
+      if (message.quick_reply.payload === 'favourites') {
+        require('./show_favourites.js')(bot, message)
       }
     }
   })
@@ -260,6 +256,10 @@ module.exports = function (controller) {
     }
   })
 
+  function showMainMenu (bot, message) {
+    bot.reply(message, mainMenu)
+  }
+
   function showingCatalog (bot, message, page) {
     const pageNumber = page || 1
 
@@ -268,10 +268,7 @@ module.exports = function (controller) {
       'show': 'name,image,shortDescription,sku,salePrice',
       'page': `${pageNumber}`
     }, function (err, data) {
-      if (err) {
-        console.warn(err)
-      }
-
+      if (err) console.warn(err)
       const createProductsListAttachment = function (data) {
         let i
         const objectToCreate = {}

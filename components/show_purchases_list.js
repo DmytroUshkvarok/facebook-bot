@@ -1,14 +1,11 @@
 const bbyApiKey = process.env.bby_api_key
 const bby = require('bestbuy')(bbyApiKey)
-
 const Customer = require('./db/customer_schema')
-
 const mainMenuButton = {
   'content_type': 'text',
   'title': 'To main menu',
   'payload': 'main_menu'
 }
-
 const shopButton = {
   'content_type': 'text',
   'title': 'Go to shop',
@@ -20,10 +17,8 @@ module.exports = function (bot, message) {
 
   Customer.findOne({ messenger_id: `${msgId}` }, 'purchases').exec(function (err, customer) {
     if (err) return console.log(err)
-
     if (!customer) {
       console.log(`No have customers with id ${msgId} in base.`)
-
       return bot.reply(message, {
         'text': `You have no customer's records in our base. To create a record please buy something.`,
         'quick_replies': [mainMenuButton, shopButton]
@@ -34,14 +29,14 @@ module.exports = function (bot, message) {
           'text': `You have no purchases. Buy something to see someone.`,
           'quick_replies': [mainMenuButton, shopButton]
         })
-      } else {        
-        const arrayOfProductsFromFinishedPurchases = [];        
-        const arrayOfFinishedPurchasesDates = [];        
-        customer.purchases.forEach(function(obj) {
-            if (obj.coordinates.latitude) {
-                arrayOfProductsFromFinishedPurchases.push(obj.product)
-                arrayOfFinishedPurchasesDates.push(obj.date)
-            }
+      } else {
+        const arrayOfProductsFromFinishedPurchases = []
+        const arrayOfFinishedPurchasesDates = []
+        customer.purchases.forEach(function (obj) {
+          if (obj.coordinates.latitude) {
+            arrayOfProductsFromFinishedPurchases.push(obj.product)
+            arrayOfFinishedPurchasesDates.push(obj.date)
+          }
         })
         if (!arrayOfFinishedPurchasesDates.length) {
           return bot.reply(message, {
@@ -59,16 +54,16 @@ module.exports = function (bot, message) {
           if (i < 10) {
             bby.products(`search=${purchaseSKU}`, {
               'format': 'json',
-              'show': 'name,sku'
+              'show': 'name,sku,image'
             }, function (err, data) {
-              if (err) {
-                console.warn(err)
-              }
-              
+              if (err) console.warn(err)
               const productName = data.products[0].name
+              const productImageURL = data.products[0].image
               const purchaseTime = arrayOfFinishedPurchasesDates[i].toString().slice(0, 24)
+
               objectToCreate.payload.elements[i] = {}
               objectToCreate.payload.elements[i].title = productName
+              objectToCreate.payload.elements[i].image_url = productImageURL
               objectToCreate.payload.elements[i].subtitle = purchaseTime
               objectToCreate.payload.elements[i].buttons = [
                 {
@@ -80,7 +75,6 @@ module.exports = function (bot, message) {
             })
           }
         })
-
         return setTimeout(function () {
           bot.reply(message, {
             'attachment': objectToCreate,
