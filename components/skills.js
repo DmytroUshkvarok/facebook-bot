@@ -41,14 +41,14 @@ module.exports = function (controller) {
   controller.on('facebook_postback', function (bot, message) {
     if (message.payload === 'start_button_clicked') {
       if (message.referral) {
-        require('./referal.js')(bot, message)
+        require('./referral.js')(bot, message)
       }
       showMainMenu(bot, message)
     }
   })
 
   controller.on('facebook_referral', function (bot, message) {
-    require('./referal.js')(bot, message)
+    require('./referral.js')(bot, message)
     showMainMenu(bot, message)
   })
 

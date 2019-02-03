@@ -1,4 +1,5 @@
 const Customer = require('./db/customer_schema')
+const messengerLink = process.env.messenger_link
 
 module.exports = function (bot, message) {
   const ref = message.referral.ref
@@ -16,7 +17,7 @@ module.exports = function (bot, message) {
             console.log(`Customers ${ref} invitations were successfully updated.`)
             bot.say(
               {
-                text: `Your link m.me/dobroDaBro?ref=${ref} is activated by user ${msgId}`,
+                text: `${messengerLink}?ref=${ref} is activated by user ${msgId}`,
                 channel: `${ref}`
               }
             )

@@ -1,4 +1,5 @@
 const Customer = require('./db/customer_schema')
+const messengerLink = process.env.messenger_link
 const mainMenuButton = {
   'content_type': 'text',
   'title': 'To main menu',
@@ -18,7 +19,7 @@ module.exports = function (bot, message) {
       Customer.create({ messenger_id: `${msgId}`, invitations: [] })
       console.log(`New customer was successfully added to base.`)
       bot.reply(message, {
-        'text': `Your link for friends m.me/dobroDaBro?ref=${msgId}\nShare with 3 friends and get 1 free product`,
+        'text': `Your link for friends ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 1 free product`,
         'quick_replies': [mainMenuButton, shopButton]
       })
     } else {
@@ -28,13 +29,13 @@ module.exports = function (bot, message) {
           if (err) console.log(err)
           console.log(`Customers invitations were successfully created with [].`)
           bot.reply(message, {
-            'text': `Your link for friends m.me/dobroDaBro?ref=${msgId}\nShare with 3 friends and get 1 free product`,
+            'text': `Your link for friends  ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 1 free product`,
             'quick_replies': [mainMenuButton, shopButton]
           })
         })
       } else {
         bot.reply(message, {
-          'text': `Your link for friends m.me/dobroDaBro?ref=${msgId}\nShare with 3 friends and get 1 free product`,
+          'text': `Your link for friends  ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 1 free product`,
           'quick_replies': [mainMenuButton, shopButton]
         })
       }
