@@ -23,7 +23,7 @@ module.exports = function (controller) {
       {
         'content_type': 'text',
         'title': 'To invite a friend',
-        'payload': 'invitation'
+        'payload': 'send_invitation'
       }
     ]
   }
@@ -40,8 +40,16 @@ module.exports = function (controller) {
 
   controller.on('facebook_postback', function (bot, message) {
     if (message.payload === 'start_button_clicked') {
+      if (message.referral) {
+        require('./referal.js')(bot, message)
+      }
       showMainMenu(bot, message)
     }
+  })
+
+  controller.on('facebook_referral', function (bot, message) {
+    require('./referal.js')(bot, message)
+    showMainMenu(bot, message)
   })
 
   controller.on('facebook_postback', function (bot, message) {
@@ -204,8 +212,8 @@ module.exports = function (controller) {
 
   controller.on('message_received', function (bot, message) {
     if (message.quick_reply) {
-      if (message.quick_reply.payload === 'favourites') {
-        require('./show_favourites.js')(bot, message)
+      if (message.quick_reply.payload === 'send_invitation') {
+        require('./send_invitation.js')(bot, message)
       }
     }
   })
@@ -214,6 +222,14 @@ module.exports = function (controller) {
     if (message.quick_reply) {
       if (message.quick_reply.payload === 'purchases') {
         require('./show_purchases_list.js')(bot, message)
+      }
+    }
+  })
+
+  controller.on('message_received', function (bot, message) {
+    if (message.quick_reply) {
+      if (message.quick_reply.payload === 'favourites') {
+        require('./show_favourites.js')(bot, message)
       }
     }
   })

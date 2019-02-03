@@ -54,14 +54,16 @@ module.exports = function (bot, message) {
           if (i < 10) {
             bby.products(`search=${purchaseSKU}`, {
               'format': 'json',
-              'show': 'name,sku'
+              'show': 'name,sku,image'
             }, function (err, data) {
               if (err) console.warn(err)
               const productName = data.products[0].name
+              const productImageURL = data.products[0].image
               const purchaseTime = arrayOfFinishedPurchasesDates[i].toString().slice(0, 24)
 
               objectToCreate.payload.elements[i] = {}
               objectToCreate.payload.elements[i].title = productName
+              objectToCreate.payload.elements[i].image_url = productImageURL
               objectToCreate.payload.elements[i].subtitle = purchaseTime
               objectToCreate.payload.elements[i].buttons = [
                 {
