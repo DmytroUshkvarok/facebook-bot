@@ -20,6 +20,7 @@ const customerSchema = new Schema({
         latitude: Number,
         longitude: Number,
       },
+      nps_index: String,
       date: { type: Date, default: Date.now }
     }]
 }, { versionKey: false })

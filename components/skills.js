@@ -1,43 +1,42 @@
 const bbyApiKey = process.env.bby_api_key
 const bby = require('bestbuy')(bbyApiKey)
+const mainMenu = {
+  'text': 'MAIN MENU',
+  'quick_replies': [
+    {
+      'content_type': 'text',
+      'title': 'My purchases',
+      'payload': 'purchases'
+    },
+    {
+      'content_type': 'text',
+      'title': 'Shop',
+      'payload': 'shop'
+    },
+    {
+      'content_type': 'text',
+      'title': 'Favourites',
+      'payload': 'favourites'
+    },
+    {
+      'content_type': 'text',
+      'title': 'To invite a friend',
+      'payload': 'send_invitation'
+    }
+  ]
+}
+const backToMainMenuButton = {
+  'content_type': 'text',
+  'title': 'To main menu',
+  'payload': 'main_menu'
+}
+const showCatalogButton = {
+  'content_type': 'text',
+  'title': 'To catalog',
+  'payload': 'back_to_catalog'
+}
 
 module.exports = function (controller) {
-  const mainMenu = {
-    'text': 'MAIN MENU',
-    'quick_replies': [
-      {
-        'content_type': 'text',
-        'title': 'My purchases',
-        'payload': 'purchases'
-      },
-      {
-        'content_type': 'text',
-        'title': 'Shop',
-        'payload': 'shop'
-      },
-      {
-        'content_type': 'text',
-        'title': 'Favourites',
-        'payload': 'favourites'
-      },
-      {
-        'content_type': 'text',
-        'title': 'To invite a friend',
-        'payload': 'send_invitation'
-      }
-    ]
-  }
-  const backToMainMenuButton = {
-    'content_type': 'text',
-    'title': 'To main menu',
-    'payload': 'main_menu'
-  }
-  const showCatalogButton = {
-    'content_type': 'text',
-    'title': 'To catalog',
-    'payload': 'back_to_catalog'
-  }
-
   controller.on('facebook_postback', function (bot, message) {
     if (message.payload === 'start_button_clicked') {
       if (message.referral) {
@@ -201,10 +200,7 @@ module.exports = function (controller) {
         require('./fix_phone.js')(message)
         bot.reply(message, {
           'text': 'Please share your location for delivery',
-          'quick_replies': [
-            {
-              'content_type': 'location'
-            }, backToMainMenuButton]
+          'quick_replies': [{'content_type': 'location'}, backToMainMenuButton]
         })
       }
     }
@@ -253,6 +249,15 @@ module.exports = function (controller) {
         'text': 'Congratulations! Our courier will contact you within 2 hours',
         'quick_replies': [backToMainMenuButton, showCatalogButton]
       })
+      setTimeout(function(){
+        require('./send_nps_request.js')(bot, message)
+      }, 60000 * 60 * 48)
+    }
+  })
+
+  controller.on('facebook_postback', function (bot, message) {
+    if (typeof (message.payload) === 'string' && ~message.payload.indexOf('nps')) {
+      require('./get_nps_answer.js')(message)
     }
   })
 
@@ -265,7 +270,7 @@ module.exports = function (controller) {
 
     bby.products('search=digital camera canon', {
       'format': 'json',
-      'show': 'name,image,shortDescription,sku,salePrice',
+      'show': 'name,image,sku,salePrice',
       'page': `${pageNumber}`
     }, function (err, data) {
       if (err) console.warn(err)
@@ -278,7 +283,7 @@ module.exports = function (controller) {
         objectToCreate.payload.template_type = 'generic'
         objectToCreate.payload.elements = []
 
-        for (i = 0; i < 9; i++) {
+        for (i = 0; i < 10; i++) {
           if (data.products[i]) {
             const productName = data.products[i].name
             const productImageURL = data.products[i].image
