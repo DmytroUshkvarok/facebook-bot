@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 mongoose.connect(`${process.env.mongodb_uri}`, {
     reconnectTries: 100,
@@ -9,4 +9,4 @@ mongoose.connect(`${process.env.mongodb_uri}`, {
     dbName: 'production-fb-bot'
   }).catch(err => console.log('Mongo connection error', err));
 
-module.exports = {mongoose};
+module.exports = { mongoose }
