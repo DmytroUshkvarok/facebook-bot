@@ -10,25 +10,25 @@ module.exports = function (message) {
       console.log(`No have customers with id ${msgId} in base. Adding new customer in base.`)
       Customer.create({
         messenger_id: `${msgId}`,
-        purchases: [{ 
+        purchases: [{
           product: `${productSKU}`,
-          price: `${productPrice}`}]
-        })
+          price: `${productPrice}` }]
+      })
       console.log(`New customer profile was created. Product was added to purchases`)
-    } else {        
+    } else {
       if (customer.purchases.length === 0) {
         console.log(`This customer have no products added to purchases. Adding first product.`)
-        customer.purchases = [{ product: `${productSKU}`, price: `${productPrice}`}]
+        customer.purchases = [{ product: `${productSKU}`, price: `${productPrice}` }]
         return customer.save(function (err) {
           if (err) return console.log(err)
           console.log(`Customers purchases were successfully created with one product.`)
         })
       } else {
-          customer.purchases.push({ product: `${productSKU}`, price: `${productPrice}`})
-          return customer.save(function (err) {
-            if (err) return console.log(err)
-            console.log(`Customers purchases were successfully updated.`)
-          })
+        customer.purchases.push({ product: `${productSKU}`, price: `${productPrice}` })
+        return customer.save(function (err) {
+          if (err) return console.log(err)
+          console.log(`Customers purchases were successfully updated.`)
+        })
       }
     }
   })

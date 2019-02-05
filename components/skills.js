@@ -200,7 +200,7 @@ module.exports = function (controller) {
         require('./fix_phone.js')(message)
         bot.reply(message, {
           'text': 'Please share your location for delivery',
-          'quick_replies': [{'content_type': 'location'}, backToMainMenuButton]
+          'quick_replies': [{ 'content_type': 'location' }, backToMainMenuButton]
         })
       }
     }
@@ -249,7 +249,7 @@ module.exports = function (controller) {
         'text': 'Congratulations! Our courier will contact you within 2 hours',
         'quick_replies': [backToMainMenuButton, showCatalogButton]
       })
-      setTimeout(function(){
+      setTimeout(function () {
         require('./send_nps_request.js')(bot, message)
       }, 60000 * 60 * 48)
     }
