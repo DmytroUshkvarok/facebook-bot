@@ -1,5 +1,5 @@
-const bbyApiKey = process.env.bby_api_key
-const bby = require('bestbuy')(bbyApiKey)
+// const bbyApiKey = process.env.bby_api_key
+// const bby = require('bestbuy')(bbyApiKey)
 const Customer = require('./db/customer_schema')
 const mainMenuButton = {
   'content_type': 'text',
@@ -50,37 +50,81 @@ module.exports = function (bot, message) {
         objectToCreate.payload.template_type = 'generic'
         objectToCreate.payload.elements = []
 
-        arrayOfProductsFromFinishedPurchases.forEach(function (purchaseSKU, i) {
-          if (i < 10) {
-            bby.products(`search=${purchaseSKU}`, {
-              'format': 'json',
-              'show': 'name,sku,image'
-            }, function (err, data) {
-              if (err) console.warn(err)
-              const productName = data.products[0].name
-              const productImageURL = data.products[0].image
-              const purchaseTime = arrayOfFinishedPurchasesDates[i].toString().slice(0, 24)
+        const productsList = require('../products.json')
 
-              objectToCreate.payload.elements[i] = {}
-              objectToCreate.payload.elements[i].title = productName
-              objectToCreate.payload.elements[i].image_url = productImageURL
-              objectToCreate.payload.elements[i].subtitle = purchaseTime
-              objectToCreate.payload.elements[i].buttons = [
-                {
-                  'type': 'postback',
-                  'title': 'See details of deal',
-                  'payload': `see_details_of_purchase ${purchaseTime}`
-                }
-              ]
-            })
+        arrayOfProductsFromFinishedPurchases.forEach(function (productId, i) {
+          
+          if (i < 10) {
+
+            for (let j = 0; j < productsList.length; j++) {
+
+              if (productsList[j].id === productId) {
+
+                const productName = productsList[j].title
+                const productImageURL = productsList[j].img
+                const purchaseTime = arrayOfFinishedPurchasesDates[i].toString().slice(0, 24)
+
+                objectToCreate.payload.elements[i] = {}
+                objectToCreate.payload.elements[i].title = productName
+                objectToCreate.payload.elements[i].image_url = productImageURL
+                objectToCreate.payload.elements[i].subtitle = purchaseTime
+              }
+            }
+
+            // const productName = data.products[0].name
+            // const productImageURL = data.products[0].image
+            // const purchaseTime = arrayOfFinishedPurchasesDates[i].toString().slice(0, 24)
+
+            // objectToCreate.payload.elements[i] = {}
+            // objectToCreate.payload.elements[i].title = productName
+            // objectToCreate.payload.elements[i].image_url = productImageURL
+            // objectToCreate.payload.elements[i].subtitle = purchaseTime
+
+            // objectToCreate.payload.elements[i].buttons = [
+            //   {
+            //     'type': 'postback',
+            //     'title': 'See details of deal',
+            //     'payload': `see_details_of_purchase ${purchaseTime}`
+            //   }
+            // ]
           }
         })
-        return setTimeout(function () {
-          bot.reply(message, {
+        return bot.reply(message, {
             'attachment': objectToCreate,
             'quick_replies': [mainMenuButton, shopButton]
-          })
-        }, 1000)
+        })
+
+        // arrayOfProductsFromFinishedPurchases.forEach(function (purchaseSKU, i) {
+        //   if (i < 10) {
+        //     bby.products(`search=${purchaseSKU}`, {
+        //       'format': 'json',
+        //       'show': 'name,sku,image'
+        //     }, function (err, data) {
+        //       if (err) console.warn(err)
+        //       const productName = data.products[0].name
+        //       const productImageURL = data.products[0].image
+        //       const purchaseTime = arrayOfFinishedPurchasesDates[i].toString().slice(0, 24)
+
+        //       objectToCreate.payload.elements[i] = {}
+        //       objectToCreate.payload.elements[i].title = productName
+        //       objectToCreate.payload.elements[i].image_url = productImageURL
+        //       objectToCreate.payload.elements[i].subtitle = purchaseTime
+        //       objectToCreate.payload.elements[i].buttons = [
+        //         {
+        //           'type': 'postback',
+        //           'title': 'See details of deal',
+        //           'payload': `see_details_of_purchase ${purchaseTime}`
+        //         }
+        //       ]
+        //     })
+        //   }
+        // })
+        // return setTimeout(function () {
+        //   bot.reply(message, {
+        //     'attachment': objectToCreate,
+        //     'quick_replies': [mainMenuButton, shopButton]
+        //   })
+        // }, 1000)
       }
     }
   })

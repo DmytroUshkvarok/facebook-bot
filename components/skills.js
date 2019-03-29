@@ -3,20 +3,20 @@ const bby = require('bestbuy')(bbyApiKey)
 const mainMenu = {
   'text': 'MAIN MENU',
   'quick_replies': [
+    // {
+    //   'content_type': 'text',
+    //   'title': 'My purchases',
+    //   'payload': 'purchases'
+    // },
     {
       'content_type': 'text',
-      'title': 'My purchases',
-      'payload': 'purchases'
+      'title': 'My basket',
+      'payload': 'favourites'
     },
     {
       'content_type': 'text',
       'title': 'Shop',
       'payload': 'shop'
-    },
-    {
-      'content_type': 'text',
-      'title': 'Favourites',
-      'payload': 'favourites'
     },
     {
       'content_type': 'text',
@@ -80,119 +80,120 @@ module.exports = function (controller) {
       }
     } else if (message.payload === 'main_menu') {
       showMainMenu(bot, message)
-    } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('view_more')) {
+    // } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('view_more')) {
+    //   const skuOfProduct = message.payload.split(' ')[1]
+
+    //   bby.products(`search=${skuOfProduct}`, {
+    //     format: 'json',
+    //     show: 'name,image,longDescription,salePrice'
+    //   }, function (err, data) {
+    //     if (err) console.warn(err)
+    //     const createProductDetailsAttachment = function (data) {
+    //       const objectToCreate = {}
+    //       objectToCreate.type = 'template'
+    //       objectToCreate.payload = {}
+    //       objectToCreate.payload.template_type = 'generic'
+    //       objectToCreate.payload.elements = []
+
+    //       const productName = data.products[0].name
+    //       const productImageURL = data.products[0].image
+    //       const longProductDescription = data.products[0].longDescription
+    //       const productPrice = data.products[0].salePrice
+
+    //       objectToCreate.payload.elements[0] = {}
+    //       objectToCreate.payload.elements[0].title = productName
+    //       objectToCreate.payload.elements[0].subtitle = longProductDescription
+    //       objectToCreate.payload.elements[0].image_url = productImageURL
+    //       objectToCreate.payload.elements[0].buttons = [
+    //         {
+    //           'type': 'postback',
+    //           'title': 'Add to favourites',
+    //           'payload': `add_to_favourites ${skuOfProduct}`
+    //         },
+    //         {
+    //           'type': 'postback',
+    //           'title': `Buy for ${productPrice}$`,
+    //           'payload': `buy_product ${skuOfProduct} ${productPrice}`
+    //         }
+    //       ]
+    //       return objectToCreate
+    //     }
+    //     const productDetailsAttachment = createProductDetailsAttachment(data)
+    //     bot.reply(message, {
+    //       'attachment': productDetailsAttachment,
+    //       'quick_replies': [backToMainMenuButton, showCatalogButton]
+    //     })
+    //   })
+    // } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('buy_product')) {
+    } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('pay_for_all')) {
       const skuOfProduct = message.payload.split(' ')[1]
-
-      bby.products(`search=${skuOfProduct}`, {
-        format: 'json',
-        show: 'name,image,longDescription,salePrice'
-      }, function (err, data) {
-        if (err) console.warn(err)
-        const createProductDetailsAttachment = function (data) {
-          const objectToCreate = {}
-          objectToCreate.type = 'template'
-          objectToCreate.payload = {}
-          objectToCreate.payload.template_type = 'generic'
-          objectToCreate.payload.elements = []
-
-          const productName = data.products[0].name
-          const productImageURL = data.products[0].image
-          const longProductDescription = data.products[0].longDescription
-          const productPrice = data.products[0].salePrice
-
-          objectToCreate.payload.elements[0] = {}
-          objectToCreate.payload.elements[0].title = productName
-          objectToCreate.payload.elements[0].subtitle = longProductDescription
-          objectToCreate.payload.elements[0].image_url = productImageURL
-          objectToCreate.payload.elements[0].buttons = [
-            {
-              'type': 'postback',
-              'title': 'Add to favourites',
-              'payload': `add_to_favourites ${skuOfProduct}`
-            },
-            {
-              'type': 'postback',
-              'title': `Buy for ${productPrice}$`,
-              'payload': `buy_product ${skuOfProduct} ${productPrice}`
-            }
-          ]
-          return objectToCreate
-        }
-        const productDetailsAttachment = createProductDetailsAttachment(data)
-        bot.reply(message, {
-          'attachment': productDetailsAttachment,
-          'quick_replies': [backToMainMenuButton, showCatalogButton]
-        })
-      })
-    } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('buy_product')) {
-      const skuOfProduct = message.payload.split(' ')[1]
-      require('./write_purchases')(message)
+      // require('./write_purchases')(message)
       bot.reply(message, {
         'text': 'Please share your phone',
         'quick_replies': [
           {
             'content_type': 'user_phone_number'
           },
-          {
-            'content_type': 'text',
-            'title': 'Back to product',
-            'payload': `back_to_product ${skuOfProduct}`
-          }
+          // {
+          //   'content_type': 'text',
+          //   'title': 'Back to product',
+          //   'payload': `back_to_product ${skuOfProduct}`
+          // }
         ]
       })
     }
   })
 
-  controller.on('message_received', function (bot, message) {
-    if (message.quick_reply) {
-      if (~message.quick_reply.payload.indexOf('back_to_product')) {
-        const skuOfProduct = message.quick_reply.payload.split(' ')[1]
+  // controller.on('message_received', function (bot, message) {
+  //   if (message.quick_reply) {
+  //     if (~message.quick_reply.payload.indexOf('back_to_product')) {
+  //       const skuOfProduct = message.quick_reply.payload.split(' ')[1]
 
-        bby.products(`search=${skuOfProduct}`, {
-          format: 'json',
-          show: 'name,image,longDescription,salePrice'
-        }, function (err, data) {
-          if (err) console.warn(err)
-          const createProductDetailsAttachment = function (data) {
-            const objectToCreate = {}
-            objectToCreate.type = 'template'
-            objectToCreate.payload = {}
-            objectToCreate.payload.template_type = 'generic'
-            objectToCreate.payload.elements = []
+  //       bby.products(`search=${skuOfProduct}`, {
+  //         format: 'json',
+  //         show: 'name,image,longDescription,salePrice'
+  //       }, function (err, data) {
+  //         if (err) console.warn(err)
+  //         const createProductDetailsAttachment = function (data) {
+  //           const objectToCreate = {}
+  //           objectToCreate.type = 'template'
+  //           objectToCreate.payload = {}
+  //           objectToCreate.payload.template_type = 'generic'
+  //           objectToCreate.payload.elements = []
 
-            const productName = data.products[0].name
-            const productImageURL = data.products[0].image
-            const longProductDescription = data.products[0].longDescription
-            const productPrice = data.products[0].salePrice
+  //           const productName = data.products[0].name
+  //           const productImageURL = data.products[0].image
+  //           const longProductDescription = data.products[0].longDescription
+  //           const productPrice = data.products[0].salePrice
 
-            objectToCreate.payload.elements[0] = {}
-            objectToCreate.payload.elements[0].title = productName
-            objectToCreate.payload.elements[0].subtitle = longProductDescription
-            objectToCreate.payload.elements[0].image_url = productImageURL
-            objectToCreate.payload.elements[0].buttons = [
-              {
-                'type': 'postback',
-                'title': 'Add to favourites',
-                'payload': `add_to_favourites ${skuOfProduct}`
-              },
-              {
-                'type': 'postback',
-                'title': `Buy for ${productPrice}$`,
-                'payload': `buy_product ${skuOfProduct} ${productPrice}`
-              }
-            ]
-            return objectToCreate
-          }
-          const productDetailsAttachment = createProductDetailsAttachment(data)
+  //           objectToCreate.payload.elements[0] = {}
+  //           objectToCreate.payload.elements[0].title = productName
+  //           objectToCreate.payload.elements[0].subtitle = longProductDescription
+  //           objectToCreate.payload.elements[0].image_url = productImageURL
+  //           objectToCreate.payload.elements[0].buttons = [
+  //             {
+  //               'type': 'postback',
+  //               'title': 'Add to favourites',
+  //               'payload': `add_to_favourites ${skuOfProduct}`
+  //             },
+  //             {
+  //               'type': 'postback',
+  //               'title': `Buy for ${productPrice}$`,
+  //               'payload': `buy_product ${skuOfProduct} ${productPrice}`
+  //             }
+  //           ]
+  //           return objectToCreate
+  //         }
+  //         const productDetailsAttachment = createProductDetailsAttachment(data)
 
-          bot.reply(message, {
-            'attachment': productDetailsAttachment,
-            'quick_replies': [backToMainMenuButton, showCatalogButton]
-          })
-        })
-      }
-    }
-  })
+  //         bot.reply(message, {
+  //           'attachment': productDetailsAttachment,
+  //           'quick_replies': [backToMainMenuButton, showCatalogButton]
+  //         })
+  //       })
+  //     }
+  //   }
+  // })
 
   controller.on('message_received', function (bot, message) {
     if (message.quick_reply) {
@@ -200,7 +201,7 @@ module.exports = function (controller) {
         require('./fix_phone.js')(message)
         bot.reply(message, {
           'text': 'Please share your location for delivery',
-          'quick_replies': [{'content_type': 'location'}, backToMainMenuButton]
+          'quick_replies': [{ 'content_type': 'location' }, backToMainMenuButton]
         })
       }
     }
@@ -210,6 +211,21 @@ module.exports = function (controller) {
     if (message.quick_reply) {
       if (message.quick_reply.payload === 'send_invitation') {
         require('./send_invitation.js')(bot, message)
+      }
+    }
+  })
+
+  controller.on('message_received', function (bot, message) {
+    if (message.quick_reply) {
+      if (message.quick_reply.payload === 'buy_all') {
+        bot.reply(message, {
+          'text': 'Please share your phone',
+          'quick_replies': [
+            {
+              'content_type': 'user_phone_number'
+            }, backToMainMenuButton
+          ]
+        })
       }
     }
   })
@@ -249,7 +265,7 @@ module.exports = function (controller) {
         'text': 'Congratulations! Our courier will contact you within 2 hours',
         'quick_replies': [backToMainMenuButton, showCatalogButton]
       })
-      setTimeout(function(){
+      setTimeout(function () {
         require('./send_nps_request.js')(bot, message)
       }, 60000 * 60 * 48)
     }
@@ -265,85 +281,172 @@ module.exports = function (controller) {
     bot.reply(message, mainMenu)
   }
 
+  // function showingCatalog (bot, message, page) {
+  //   const pageNumber = page || 1
+
+  //   bby.products('search=digital camera canon', {
+  //     'format': 'json',
+  //     'show': 'name,image,sku,salePrice',
+  //     'page': `${pageNumber}`
+  //   }, function (err, data) {
+  //     if (err) console.warn(err)
+  //     const createProductsListAttachment = function (data) {
+  //       let i
+  //       const objectToCreate = {}
+
+  //       objectToCreate.type = 'template'
+  //       objectToCreate.payload = {}
+  //       objectToCreate.payload.template_type = 'generic'
+  //       objectToCreate.payload.elements = []
+
+  //       for (i = 0; i < 10; i++) {
+  //         if (data.products[i]) {
+  //           const productName = data.products[i].name
+  //           const productImageURL = data.products[i].image
+
+  //           objectToCreate.payload.elements[i - k] = {}
+  //           objectToCreate.payload.elements[i - k].title = productName
+  //           objectToCreate.payload.elements[i - k].image_url = productImageURL
+  //           objectToCreate.payload.elements[i - k].buttons = [
+  //             {
+  //               'type': 'postback',
+  //               'title': 'View more',
+  //               'payload': `view_more ${data.products[i].sku}`
+  //             },
+  //             {
+  //               'type': 'postback',
+  //               'title': 'Add to favourites',
+  //               'payload': `add_to_favourites ${data.products[i].sku}`
+  //             },
+  //             {
+  //               'type': 'postback',
+  //               'title': `Buy for ${data.products[i].salePrice}$`,
+  //               'payload': `buy_product ${data.products[i].sku} ${data.products[i].salePrice}`
+  //             }
+  //           ]
+  //         }
+  //       }
+
+  //       return objectToCreate
+  //     }
+
+  //     const productsListAttachment = createProductsListAttachment(data)
+
+  //     if (pageNumber === 1) {
+  //       bot.reply(message, {
+  //         'attachment': productsListAttachment,
+  //         'quick_replies': [backToMainMenuButton,
+  //           {
+  //             'content_type': 'text',
+  //             'title': 'See more products',
+  //             'payload': `go_to_next_page ${pageNumber}`
+  //           }]
+  //       })
+  //     } else {
+  //       bot.reply(message, {
+  //         'attachment': productsListAttachment,
+  //         'quick_replies': [
+  //           {
+  //             'content_type': 'text',
+  //             'title': 'See previous',
+  //             'payload': `go_to_previous_page ${pageNumber}`
+  //           },
+  //           backToMainMenuButton,
+  //           {
+  //             'content_type': 'text',
+  //             'title': 'See next',
+  //             'payload': `go_to_next_page ${pageNumber}`
+  //           }
+  //         ]
+  //       })
+  //     }
+  //   })
+  // }
+  
   function showingCatalog (bot, message, page) {
-    const pageNumber = page || 1
+    let pageNumber = page || 1
+    const productsList = require('../products.json')
 
-    bby.products('search=digital camera canon', {
-      'format': 'json',
-      'show': 'name,image,sku,salePrice',
-      'page': `${pageNumber}`
-    }, function (err, data) {
-      if (err) console.warn(err)
-      const createProductsListAttachment = function (data) {
-        let i
-        const objectToCreate = {}
+    const createProductsListAttachment = function (data) {
+      const products = data
+      const objectToCreate = {}
 
-        objectToCreate.type = 'template'
-        objectToCreate.payload = {}
-        objectToCreate.payload.template_type = 'generic'
-        objectToCreate.payload.elements = []
+      objectToCreate.type = 'template'
+      objectToCreate.payload = {}
+      objectToCreate.payload.template_type = 'generic'
+      objectToCreate.payload.elements = []
 
-        for (i = 0; i < 10; i++) {
-          if (data.products[i]) {
-            const productName = data.products[i].name
-            const productImageURL = data.products[i].image
-
-            objectToCreate.payload.elements[i] = {}
-            objectToCreate.payload.elements[i].title = productName
-            objectToCreate.payload.elements[i].image_url = productImageURL
-            objectToCreate.payload.elements[i].buttons = [
-              {
-                'type': 'postback',
-                'title': 'View more',
-                'payload': `view_more ${data.products[i].sku}`
-              },
-              {
-                'type': 'postback',
-                'title': 'Add to favourites',
-                'payload': `add_to_favourites ${data.products[i].sku}`
-              },
-              {
-                'type': 'postback',
-                'title': `Buy for ${data.products[i].salePrice}$`,
-                'payload': `buy_product ${data.products[i].sku} ${data.products[i].salePrice}`
-              }
-            ]
-          }
-        }
-
-        return objectToCreate
-      }
-
-      const productsListAttachment = createProductsListAttachment(data)
+      let k
 
       if (pageNumber === 1) {
-        bot.reply(message, {
-          'attachment': productsListAttachment,
-          'quick_replies': [backToMainMenuButton,
-            {
-              'content_type': 'text',
-              'title': 'See more products',
-              'payload': `go_to_next_page ${pageNumber}`
-            }]
-        })
+        k = 0
+      } else if (pageNumber === 2) {
+        k = 10
+      } else if (pageNumber === 3) {
+        k = 20
       } else {
-        bot.reply(message, {
-          'attachment': productsListAttachment,
-          'quick_replies': [
-            {
-              'content_type': 'text',
-              'title': 'See previous',
-              'payload': `go_to_previous_page ${pageNumber}`
-            },
-            backToMainMenuButton,
-            {
-              'content_type': 'text',
-              'title': 'See next',
-              'payload': `go_to_next_page ${pageNumber}`
-            }
-          ]
-        })
+        k = 0
+        pageNumber = 1
       }
-    })
+
+      for (let i = k; i < (k + 10); i++) {
+
+        if (products[i]) {
+
+          const productName = products[i].title
+          const productImageURL = products[i].img
+
+          objectToCreate.payload.elements[i - k] = {}
+          objectToCreate.payload.elements[i - k].title = productName
+          objectToCreate.payload.elements[i - k].subtitle = `${products[i].price} ZAR`
+          objectToCreate.payload.elements[i - k].image_url = productImageURL
+          objectToCreate.payload.elements[i - k].buttons = [
+            {
+              'type': 'postback',
+              'title': 'Add to basket',
+              'payload': `add_to_favourites ${products[i].id}`
+            },
+            // {
+            //   'type': 'postback',
+            //   'title': `Buy in one click for ${products[i].price} ZAR`,
+            //   'payload': `buy_product ${products[i].id} ${products[i].price}`
+            // }
+          ]
+        }
+      }
+
+      return objectToCreate
+    }
+
+    const productsListAttachment = createProductsListAttachment(productsList)
+
+    if (pageNumber === 1) {
+      bot.reply(message, {
+        'attachment': productsListAttachment,
+        'quick_replies': [backToMainMenuButton,
+          {
+            'content_type': 'text',
+            'title': 'See more products',
+            'payload': `go_to_next_page ${pageNumber}`
+          }]
+      })
+    } else {
+      bot.reply(message, {
+        'attachment': productsListAttachment,
+        'quick_replies': [
+          {
+            'content_type': 'text',
+            'title': 'See previous',
+            'payload': `go_to_previous_page ${pageNumber}`
+          },
+          backToMainMenuButton,
+          {
+            'content_type': 'text',
+            'title': 'See next',
+            'payload': `go_to_next_page ${pageNumber}`
+          }
+        ]
+      })
+    }
   }
 }
