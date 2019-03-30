@@ -1,5 +1,5 @@
-const bbyApiKey = process.env.bby_api_key
-const bby = require('bestbuy')(bbyApiKey)
+// const bbyApiKey = process.env.bby_api_key
+// const bby = require('bestbuy')(bbyApiKey)
 const mainMenu = {
   'text': 'MAIN MENU',
   'quick_replies': [
@@ -397,8 +397,8 @@ module.exports = function (controller) {
           const productImageURL = products[i].img
 
           objectToCreate.payload.elements[i - k] = {}
-          objectToCreate.payload.elements[i - k].title = productName
-          objectToCreate.payload.elements[i - k].subtitle = `${products[i].price} ZAR`
+          objectToCreate.payload.elements[i - k].title = `R ${products[i].price}`
+          objectToCreate.payload.elements[i - k].subtitle = productName
           objectToCreate.payload.elements[i - k].image_url = productImageURL
           objectToCreate.payload.elements[i - k].buttons = [
             {
