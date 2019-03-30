@@ -33,9 +33,9 @@ module.exports = function (bot, payloadMessage) {
       const productImageURL = products[i].img
 
       objectToCreate.payload.elements[i] = {}
-      objectToCreate.payload.elements[i].title = productName
+      objectToCreate.payload.elements[i].title = `R ${products[i].price}`
       objectToCreate.payload.elements[i].image_url = productImageURL
-      objectToCreate.payload.elements[i].subtitle = `Price: ${products[i].price} ZAR`
+      objectToCreate.payload.elements[i].subtitle = productName
       // objectToCreate.payload.elements[i].buttons = [
       //   {
       //     'type': 'postback',
