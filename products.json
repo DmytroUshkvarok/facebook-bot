@@ -3,180 +3,269 @@
     "title": "C00 – TOMATO VEGGIE COMBO",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ComboBigVeggieTomato-nw_540x.jpg",
     "price": "135.00",
-    "id": "1"
+    "category": "BULK COMBOS"
   },
   {
     "title": "C01 – ORIGINAL REGULAR SUPER DEAL",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/combo-Orginalregular12.Image_.095057_540x.jpg",
     "price": "410.00",
-    "id": "2"
+    "category": "BULK COMBOS"
   },
   {
     "title": "C02 – ORIGINAL BIG SUPER DEAL",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/combo-originalbig_540x.jpg",
     "price": "590.00",
-    "id": "3"
+    "category": "BULK COMBOS"
   },
   {
     "title": "C03 – THE BASIC CARB COMBO",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ComboOctoberCarbCombo_1024x1024@2x.jpg",
     "price": "258.00",
-    "id": "4"
+    "category": "BULK COMBOS"
   },
   {
     "title": "C04 – THE DRINKS COMBO",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ComboOctDrinks_540x.jpg",
     "price": "187.00",
-    "id": "5"
+    "category": "BULK COMBOS"
   },
   {
     "title": "C05 – BUTTERNUT VEGGIE COMBO",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ComboBigVeggieCombo_540x.jpg",
     "price": "145.00",
-    "id": "6"
+    "category": "BULK COMBOS"
   },
   {
     "title": "C06 – THE FRUIT AND VEG COMBO",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ComboDecFruitVeg_540x.png",
     "price": "45.00",
-    "id": "7"
+    "category": "BULK COMBOS"
   },
   {
     "title": "M01 – CHICKEN FROZEN PIECES 10KG",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/chicken_540x-1.jpg",
     "price": "290.00",
-    "id": "8"
+    "category": "MEAT & POULTRY"
   },
   {
     "title": "M02 – CHICKEN HENS FROZEN – NEW! WHOLE CHICKENS 10KG",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/bd0dbf27-185a-4011-b528-be509279e1c9_540x-1.jpg",
     "price": "285.00",
-    "id": "9"
+    "category": "MEAT & POULTRY"
   },
   {
     "title": "M04 – BEEF BURGERS 20X 90G",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/MeatBeefBurgers20_540x.jpg",
     "price": "52.00",
-    "id": "10"
+    "category": "MEAT & POULTRY"
   },
   {
     "title": "M07 – PORK R50 PACK AT 44.95 PER KG",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/MeatPork50g_540x.jpg",
     "price": "50.00",
-    "id": "11"
+    "category": "MEAT & POULTRY"
   },
   {
     "title": "M08 – WORS R50 PACK R34.95 PER KG",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/GOLD-Restaurant-Boerewors_540x.jpg",
     "price": "50.00",
-    "id": "12"
+    "category": "MEAT & POULTRY"
   },
   {
     "title": "M09 – WORS XL DEAL: 5KG AT R26 PER KG",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/Wors_10x50R_pack_540x.jpg",
     "price": "130.00",
-    "id": "13"
+    "category": "MEAT & POULTRY"
   },
   {
     "title": "D01 – MILK FULL CREAM 6 X 1L",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/parmalat-everfresh-full-cream-milk-6x1l.jpg",
     "price": "69.00",
-    "id": "14"
+    "category": "DAIRY PRODUCTS"
   },
   {
     "title": "D02 – YOGHURT SMOOTH 6’S",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/silo-6009616042408-front-294496_400Wx400H_540x.jpg",
     "price": "16.99",
-    "id": "15"
+    "category": "DAIRY PRODUCTS"
   },
   {
     "title": "D03 – EGGS 18 PACK LARGE",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/2592115_360x.jpg",
     "price": "35.00",
-    "id": "16"
+    "category": "DAIRY PRODUCTS"
   },
   {
     "title": "D04 – MARGARINE SUNSHINE D 500G",
     "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/sunshine-d-original-margarine-500g_540x.jpg",
     "price": "23.99",
-    "id": "17"
+    "category": "DAIRY PRODUCTS"
   },
   {
-    "title": "Product 18",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "18"
+    "title": "C04 – THE DRINKS COMBO",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ComboOctDrinks_540x.jpg",
+    "price": "187.00",
+    "category": "DRINKS"
   },
   {
-    "title": "Product 19",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "19"
+    "title": "DR00 – CREMORA 750G",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/DryGroceriesCremora750g_540x.jpg",
+    "price": "32.50",
+    "category": "DRINKS"
   },
   {
-    "title": "Product 20",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "20"
+    "title": "DR01 – COFFEE NESTLE RICOFFY 250G",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/DrygroceriesCoffeeNestle250g_adj_540x.jpg",
+    "price": "33.00",
+    "category": "DRINKS"
   },
   {
-    "title": "Product 21",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "21"
+    "title": "DR03 – CHOCOLATE POWDER NESTLE NESQUIK 500G",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/DrygroceriesNesquik500g_540x.jpg",
+    "price": "43.00",
+    "category": "DRINKS"
   },
   {
-    "title": "Product 22",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "22"
+    "title": "DR05 – TEA ROOIBOS FRESHPAK 80 BAGS",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/51l85aO3f9L_540x.jpg",
+    "price": "43.00",
+    "category": "DRINKS"
   },
   {
-    "title": "Product 23",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "23"
+    "title": "DR07 – SPARLETTA CREME SOFT DRINK 2L",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/silo-6001134087305-front-295668_400Wx400H_540x.jpg",
+    "price": "19.00",
+    "category": "DRINKS"
   },
   {
-    "title": "Product 24",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "24"
+    "title": "DR10 – OROS 2L",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/DrygroceriesOros2l_540x.jpg",
+    "price": "38.00",
+    "category": "DRINKS"
   },
   {
-    "title": "Product 25",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "25"
+    "title": "C01 – ORIGINAL REGULAR SUPER DEAL",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/combo-Orginalregular12.Image_.095057_540x.jpg",
+    "price": "410.00",
+    "category": "DRY GROCERIES"
   },
   {
-    "title": "Product 26",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "26"
+    "title": "C02 – ORIGINAL BIG SUPER DEAL",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/combo-originalbig_540x.jpg",
+    "price": "590.00",
+    "category": "DRY GROCERIES"
   },
   {
-    "title": "Product 27",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "27"
+    "title": "G01 – FLOUR CAKE WHEAT GOLDEN CLOUD / SASKO / SNOWFLAKE 5KG",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/DrygroceriesFlourSasko5kg_adj_540x.jpg",
+    "price": "53.00",
+    "category": "DRY GROCERIES"
   },
   {
-    "title": "Product 28",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "28"
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/DryGroceriesMaizemealImpala5kg_540x.jpg",
+    "price": "35.00",
+    "category": "DRY GROCERIES"
   },
   {
-    "title": "Product 29",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
-    "price": "25.00",
-    "id": "29"
+    "title": "G06 – FLOUR CAKE WHEAT GOLDEN CLOUD / SASKO / SNOWFLAKE 10KG",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/DrygroceriesFlourGoldenCloud10kg_adj_540x.jpg",
+    "price": "82.00",
+    "category": "DRY GROCERIES"
   },
   {
-    "title": "Product 30",
-    "img": "https://kor.ill.in.ua/m/610x385/2162894.jpg",
+    "title": "G08 – SUGAR BEANS IMBO RED SPECKLED 500G",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/Dry017.Picture.055038_360x-1.jpg",
+    "price": "15.00",
+    "category": "DRY GROCERIES"
+  },
+  {
+    "title": "P00 – TOMATOES 5KG",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ProduceTomatoes5kg_1024x1024@2x.jpg",
+    "price": "55.00",
+    "category": "FRUIT & VEGETABLES"
+  },
+  {
+    "title": "P03 – ONIONS 1KG",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/Onionslarge1kg_adj_540x.jpg",
+    "price": "9.00",
+    "category": "FRUIT & VEGETABLES"
+  },
+  {
+    "title": "P04 – BEETROOT 1 KG",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/Beetroot-Cut-Whole-57517.jpg",
+    "price": "10.00",
+    "category": "FRUIT & VEGETABLES"
+  },
+  {
+    "title": "P06 – CARROTS 1 KG",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/202036_540x.png",
+    "price": "7.50",
+    "category": "FRUIT & VEGETABLES"
+  },
+  {
+    "title": "P11 – BANANAS 1 KG",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/bananas.jpg",
+    "price": "9.00",
+    "category": "FRUIT & VEGETABLES"
+  },
+  {
+    "title": "C07 – THE TOILETRY COMBO",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ComboToiletries_540x.jpg",
+    "price": "41.00",
+    "category": "HOUSEHOLD & TOILETRIES"
+  },
+  {
+    "title": "T01 – SANITARY PADS LIL-LETS MAXI THICK 8’S",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ToiletriesSanitaryPadsLilLetsMaxi8s_540x.jpg",
+    "price": "13.00",
+    "category": "HOUSEHOLD & TOILETRIES"
+  },
+  {
+    "title": "T02 – SANITARY PADS STAYFREE REGULAR 10’S",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ToiletriesSanitaryPadsStayfreeReg10s_540x.jpg",
+    "price": "16.00",
+    "category": "HOUSEHOLD & TOILETRIES"
+  },
+  {
+    "title": "T03 – TOOTHPASTE COLGATE TRIPLE OR AQUAFRESH 100ML",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ToiletriesToothpasteColgate100ml_540x.jpg",
+    "price": "12.00",
+    "category": "HOUSEHOLD & TOILETRIES"
+  },
+  {
+    "title": "T04 – TOOTHBRUSH HARD OR MEDIUM ADULT",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/ToiletriesToothbrush1_540x.jpg",
+    "price": "7.00",
+    "category": "HOUSEHOLD & TOILETRIES"
+  },
+  {
+    "title": "C08 – HOUSEHOLD CLEANING COMBO",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/HH_540x-1.jpg",
+    "price": "142.00",
+    "category": "HOUSEHOLD CLEANING"
+  },
+  {
+    "title": "H02- SUNLIGHT WASHING POWDER HANDWASH 1KG",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/03/Unknown.jpeg",
+    "price": "40.00",
+    "category": "HOUSEHOLD CLEANING"
+  },
+  {
+    "title": "H04 – HANDY ANDY CREAM REFILL 750ML",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/silo-6001087009805-front-249828_400Wx400H_360x-1.jpg",
+    "price": "19.00",
+    "category": "HOUSEHOLD CLEANING"
+  },
+  {
+    "title": "H05 – BLEACH DOMESTOS MULTIPURPOSE THICK BLEACH 750ML",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/silo-6001085063304-front-263887_400Wx400H_540x.jpg",
     "price": "25.00",
-    "id": "30"
+    "category": "HOUSEHOLD CLEANING"
+  },
+  {
+    "title": "H08 – SUNLIGHT WASHING UP LIQUID 750ML",
+    "img": "https://yebofresh.co.za/wp-content/uploads/2019/02/silo-6001087358743-front-253653_400Wx400H_540x.jpg",
+    "price": "27.00",
+    "category": "HOUSEHOLD CLEANING"
   }
 ]

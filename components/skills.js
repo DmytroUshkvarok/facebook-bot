@@ -39,10 +39,11 @@ const showCatalogButton = {
 module.exports = function (controller) {
   controller.on('facebook_postback', function (bot, message) {
     if (message.payload === 'start_button_clicked') {
-      if (message.referral) {
-        require('./referral.js')(bot, message)
-      }
-      showMainMenu(bot, message)
+      // if (message.referral) {
+      //   require('./referral.js')(bot, message)
+      // }
+      // showMainMenu(bot, message)
+      bot.reply(message, 'Hi! I\'m here!\nDo you want to always have supply of food and save money on food purchases?\nNo problem. I will help you with this :)\nUse the static menu buttons below to get started and use the capabilities of the bot.')
     }
   })
 
@@ -53,7 +54,8 @@ module.exports = function (controller) {
 
   controller.on('facebook_postback', function (bot, message) {
     if (message.payload === 'catalog') {
-      showingCatalog(bot, message)
+      // showingCatalog(bot, message)
+      showingCatalog(bot, message, "BULK COMBOS")
     }
   })
 
@@ -63,10 +65,12 @@ module.exports = function (controller) {
         showMainMenu(bot, message)
       }
       if (message.quick_reply.payload === 'shop') {
-        showingCatalog(bot, message)
+        // showingCatalog(bot, message)
+        showingCatalog(bot, message, "BULK COMBOS")
       }
       if (message.quick_reply.payload === 'back_to_catalog') {
-        showingCatalog(bot, message)
+        // showingCatalog(bot, message)
+        showingCatalog(bot, message, "BULK COMBOS")
       }
       if (~message.quick_reply.payload.indexOf('go_to_next_page')) {
         const number = +message.quick_reply.payload.split(' ')[1] + 1
@@ -125,7 +129,6 @@ module.exports = function (controller) {
     //     })
     //   })
     // } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('buy_product')) {
-    } else if (typeof (message.payload) === 'string' && ~message.payload.indexOf('pay_for_all')) {
       const skuOfProduct = message.payload.split(' ')[1]
       // require('./write_purchases')(message)
       bot.reply(message, {
@@ -201,7 +204,8 @@ module.exports = function (controller) {
         require('./fix_phone.js')(message)
         bot.reply(message, {
           'text': 'Please share your location for delivery',
-          'quick_replies': [{ 'content_type': 'location' }, backToMainMenuButton]
+          // 'quick_replies': [{ 'content_type': 'location' }, backToMainMenuButton]
+          'quick_replies': [{ 'content_type': 'location' }]
         })
       }
     }
@@ -223,7 +227,7 @@ module.exports = function (controller) {
           'quick_replies': [
             {
               'content_type': 'user_phone_number'
-            }, backToMainMenuButton
+            }
           ]
         })
       }
@@ -263,7 +267,8 @@ module.exports = function (controller) {
       require('./fix_coordinates.js')(message)
       bot.reply(message, {
         'text': 'Congratulations! Our courier will contact you within 2 hours',
-        'quick_replies': [backToMainMenuButton, showCatalogButton]
+        // 'quick_replies': [backToMainMenuButton, showCatalogButton]
+        'quick_replies': [showCatalogButton]
       })
       setTimeout(function () {
         require('./send_nps_request.js')(bot, message)
@@ -362,50 +367,108 @@ module.exports = function (controller) {
   //     }
   //   })
   // }
+
+
+
+  controller.on('message_received', function (bot, message) {
+    if (message.text === "Hi" ||
+        message.text === "hi" || 
+        message.text === "HI") {
+      
+      bot.reply(message, {
+        'text': 'Hi! I\'m here!\nDo you want to always have supply of food and save money on food purchases?\nNo problem. I will help you with this :)\nUse the static menu buttons below to get started and use the capabilities of the bot.',
+        // 'quick_replies': [backToMainMenuButton, showCatalogButton]
+      })
+    }
+  })
+
+  controller.on('facebook_postback', function (bot, message) {
+    if (message.payload === 'show_basket') {
+      require('./show_favourites.js')(bot, message)
+    }
+  })
   
-  function showingCatalog (bot, message, page) {
-    let pageNumber = page || 1
+  controller.on('facebook_postback', function (bot, message) {
+    if (message.payload === 'send_invitation') {
+      require('./send_invitation.js')(bot, message)
+    }
+  })
+
+  controller.on('message_received', function (bot, message) {
+    if (message.quick_reply) {
+      if (message.quick_reply.payload === `BULK COMBOS` ||
+          message.quick_reply.payload === `DAIRY PRODUCTS` ||
+          message.quick_reply.payload === `DRINKS` ||
+          message.quick_reply.payload === `DRY GROCERIES` ||
+          message.quick_reply.payload === `FRUIT & VEGETABLES` ||
+          message.quick_reply.payload === `HOUSEHOLD & TOILETRIES` ||
+          message.quick_reply.payload === `HOUSEHOLD CLEANING` ||
+          message.quick_reply.payload === `MEAT & POULTRY`) {
+
+            showingCatalog(bot, message, message.quick_reply.payload)
+      }
+    }
+  })
+  
+  function showingCatalog (bot, message, category) {
     const productsList = require('../products.json')
 
     const createProductsListAttachment = function (data) {
       const products = data
       const objectToCreate = {}
 
+      let currentCategoryProductsArray = []
+
+      for (let i = 0; i < products.length; i++) {
+
+        if (products[i].category === category) {
+
+          currentCategoryProductsArray.push(products[i])
+        }
+      }
+
       objectToCreate.type = 'template'
       objectToCreate.payload = {}
       objectToCreate.payload.template_type = 'generic'
       objectToCreate.payload.elements = []
 
-      let k
+      for (let i = 0; i < currentCategoryProductsArray.length; i++) {
 
-      if (pageNumber === 1) {
-        k = 0
-      } else if (pageNumber === 2) {
-        k = 10
-      } else if (pageNumber === 3) {
-        k = 20
-      } else {
-        k = 0
-        pageNumber = 1
-      }
+        if (currentCategoryProductsArray[i]) {
 
-      for (let i = k; i < (k + 10); i++) {
+          const productName = currentCategoryProductsArray[i].title
+          const productImageURL = currentCategoryProductsArray[i].img
 
-        if (products[i]) {
-
-          const productName = products[i].title
-          const productImageURL = products[i].img
-
-          objectToCreate.payload.elements[i - k] = {}
-          objectToCreate.payload.elements[i - k].title = `R ${products[i].price}`
-          objectToCreate.payload.elements[i - k].subtitle = productName
-          objectToCreate.payload.elements[i - k].image_url = productImageURL
-          objectToCreate.payload.elements[i - k].buttons = [
+          objectToCreate.payload.elements[i] = {}
+          objectToCreate.payload.elements[i].title = `R ${currentCategoryProductsArray[i].price}`
+          objectToCreate.payload.elements[i].subtitle = productName
+          objectToCreate.payload.elements[i].image_url = productImageURL
+          objectToCreate.payload.elements[i].buttons = [
             {
               'type': 'postback',
-              'title': 'Add to basket',
-              'payload': `add_to_favourites ${products[i].id}`
+              'title': `Buy 1 for ${currentCategoryProductsArray[i].price} R`,
+              'payload': `add_to_favourites ${currentCategoryProductsArray[i].title}`
             },
+            {
+              'type': 'postback',
+              'title': `Buy 2 for ${currentCategoryProductsArray[i].price * 2} R`,
+              'payload': `add_to_favourites ${currentCategoryProductsArray[i].title}`
+            },
+            {
+              'type': 'postback',
+              'title': `Buy 3 for ${currentCategoryProductsArray[i].price * 3} R`,
+              'payload': `add_to_favourites ${currentCategoryProductsArray[i].title}`
+            },
+            // {
+            //   'type': 'postback',
+            //   'title': `Buy 4 for ${currentCategoryProductsArray[i].price * 4} R`,
+            //   'payload': `add_to_favourites ${currentCategoryProductsArray[i].title}`
+            // },
+            // {
+            //   'type': 'postback',
+            //   'title': `Buy 5 for ${currentCategoryProductsArray[i].price * 5} R`,
+            //   'payload': `add_to_favourites ${currentCategoryProductsArray[i].title}`
+            // },
             // {
             //   'type': 'postback',
             //   'title': `Buy in one click for ${products[i].price} ZAR`,
@@ -420,33 +483,161 @@ module.exports = function (controller) {
 
     const productsListAttachment = createProductsListAttachment(productsList)
 
-    if (pageNumber === 1) {
-      bot.reply(message, {
-        'attachment': productsListAttachment,
-        'quick_replies': [backToMainMenuButton,
-          {
-            'content_type': 'text',
-            'title': 'See more products',
-            'payload': `go_to_next_page ${pageNumber}`
-          }]
-      })
-    } else {
+    // if (pageNumber === 1) {
       bot.reply(message, {
         'attachment': productsListAttachment,
         'quick_replies': [
+          // backToMainMenuButton,
+          // {
+          //   'content_type': 'text',
+          //   'title': 'See more products',
+          //   'payload': `go_to_next_page ${pageNumber}`
+          // }
           {
             'content_type': 'text',
-            'title': 'See previous',
-            'payload': `go_to_previous_page ${pageNumber}`
+            'title': 'BULK COMBOS',
+            'payload': `BULK COMBOS`
           },
-          backToMainMenuButton,
           {
             'content_type': 'text',
-            'title': 'See next',
-            'payload': `go_to_next_page ${pageNumber}`
+            'title': 'DAIRY PRODUCTS',
+            'payload': `DAIRY PRODUCTS`
+          },
+          {
+            'content_type': 'text',
+            'title': 'DRINKS',
+            'payload': `DRINKS`
+          },
+          {
+            'content_type': 'text',
+            'title': 'DRY GROCERIES',
+            'payload': `DRY GROCERIES`
+          },
+          {
+            'content_type': 'text',
+            'title': 'FRUIT & VEGETABLES',
+            'payload': `FRUIT & VEGETABLES`
+          },
+          {
+            'content_type': 'text',
+            'title': 'HOUSEHOLD & TOILETRIES',
+            'payload': `HOUSEHOLD & TOILETRIES`
+          },
+          {
+            'content_type': 'text',
+            'title': 'HOUSEHOLD CLEANING',
+            'payload': `HOUSEHOLD CLEANING`
+          },
+          {
+            'content_type': 'text',
+            'title': 'MEAT & POULTRY',
+            'payload': `MEAT & POULTRY`
           }
         ]
       })
-    }
+    // } else {
+    //   bot.reply(message, {
+    //     'attachment': productsListAttachment,
+    //     'quick_replies': [
+    //       {
+    //         'content_type': 'text',
+    //         'title': 'See previous',
+    //         'payload': `go_to_previous_page ${pageNumber}`
+    //       },
+    //       backToMainMenuButton,
+    //       {
+    //         'content_type': 'text',
+    //         'title': 'See next',
+    //         'payload': `go_to_next_page ${pageNumber}`
+    //       }
+    //     ]
+    //   })
+    // }
   }
+  // function showingCatalog (bot, message, page) {
+  //   let pageNumber = page || 1
+  //   const productsList = require('../products.json')
+
+  //   const createProductsListAttachment = function (data) {
+  //     const products = data
+  //     const objectToCreate = {}
+
+  //     objectToCreate.type = 'template'
+  //     objectToCreate.payload = {}
+  //     objectToCreate.payload.template_type = 'generic'
+  //     objectToCreate.payload.elements = []
+
+  //     let k
+
+  //     if (pageNumber === 1) {
+  //       k = 0
+  //     } else if (pageNumber === 2) {
+  //       k = 10
+  //     } else if (pageNumber === 3) {
+  //       k = 20
+  //     } else {
+  //       k = 0
+  //       pageNumber = 1
+  //     }
+
+  //     for (let i = k; i < (k + 10); i++) {
+
+  //       if (products[i]) {
+
+  //         const productName = products[i].title
+  //         const productImageURL = products[i].img
+
+  //         objectToCreate.payload.elements[i - k] = {}
+  //         objectToCreate.payload.elements[i - k].title = `R ${products[i].price}`
+  //         objectToCreate.payload.elements[i - k].subtitle = productName
+  //         objectToCreate.payload.elements[i - k].image_url = productImageURL
+  //         objectToCreate.payload.elements[i - k].buttons = [
+  //           {
+  //             'type': 'postback',
+  //             'title': 'Add to basket',
+  //             'payload': `add_to_favourites ${products[i].id}`
+  //           },
+  //           // {
+  //           //   'type': 'postback',
+  //           //   'title': `Buy in one click for ${products[i].price} ZAR`,
+  //           //   'payload': `buy_product ${products[i].id} ${products[i].price}`
+  //           // }
+  //         ]
+  //       }
+  //     }
+
+  //     return objectToCreate
+  //   }
+
+  //   const productsListAttachment = createProductsListAttachment(productsList)
+
+  //   if (pageNumber === 1) {
+  //     bot.reply(message, {
+  //       'attachment': productsListAttachment,
+  //       'quick_replies': [backToMainMenuButton,
+  //         {
+  //           'content_type': 'text',
+  //           'title': 'See more products',
+  //           'payload': `go_to_next_page ${pageNumber}`
+  //         }]
+  //     })
+  //   } else {
+  //     bot.reply(message, {
+  //       'attachment': productsListAttachment,
+  //       'quick_replies': [
+  //         {
+  //           'content_type': 'text',
+  //           'title': 'See previous',
+  //           'payload': `go_to_previous_page ${pageNumber}`
+  //         },
+  //         backToMainMenuButton,
+  //         {
+  //           'content_type': 'text',
+  //           'title': 'See next',
+  //           'payload': `go_to_next_page ${pageNumber}`
+  //         }
+  //       ]
+  //     })
+  //   }
+  // }
 }

@@ -57,7 +57,7 @@ module.exports = function (bot, payloadMessage) {
                 'content_type': 'text',
                 'title': 'Buy all products',
                 'payload': 'buy_all'
-              }, mainMenuButton, shopButton]
+              }, shopButton]
             })
   
   // const msgId = message.sender.id
