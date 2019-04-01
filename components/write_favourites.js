@@ -67,6 +67,6 @@ module.exports = function (bot, message) {
   // })
   bot.reply(message, {
     'text': 'Product was added to your basket',
-    'quick_replies': [mainMenuButton, shopButton, favouritesButton]
+    'quick_replies': [shopButton, favouritesButton]
   })
 }

@@ -20,7 +20,8 @@ module.exports = function (bot, message) {
       console.log(`New customer was successfully added to base.`)
       bot.reply(message, {
         'text': `Your link for friends ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 10% discount`,
-        'quick_replies': [mainMenuButton, shopButton]
+        // 'quick_replies': [mainMenuButton, shopButton]
+        'quick_replies': [shopButton]
       })
     } else {
       if (!customer.invitations.length) {
@@ -30,13 +31,15 @@ module.exports = function (bot, message) {
           console.log(`Customers invitations were successfully created with [].`)
           bot.reply(message, {
             'text': `Your link for friends  ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 10% discount`,
-            'quick_replies': [mainMenuButton, shopButton]
+            // 'quick_replies': [mainMenuButton, shopButton]
+            'quick_replies': [shopButton]
           })
         })
       } else {
         bot.reply(message, {
           'text': `Your link for friends  ${messengerLink}?ref=${msgId}\nShare with 3 friends and get 10% discount`,
-          'quick_replies': [mainMenuButton, shopButton]
+          // 'quick_replies': [mainMenuButton, shopButton]
+          'quick_replies': [shopButton]
         })
       }
     }

@@ -11,14 +11,29 @@ module.exports = function (controller) {
       'call_to_actions': [
         {
           'type': 'postback',
-          'title': 'Main menu',
-          'payload': 'main_menu'
+          'title': 'Shop',
+          'payload': 'catalog'
         },
         {
           'type': 'postback',
-          'title': 'Catalog',
-          'payload': 'catalog'
+          'title': 'My basket',
+          'payload': 'show_basket'
+        },
+        {
+          'type': 'postback',
+          'title': 'To invite a friend',
+          'payload': 'send_invitation'
         }
+                // {
+        //   'type': 'postback',
+        //   'title': 'Main menu',
+        //   'payload': 'main_menu'
+        // },
+        // {
+        //   'type': 'postback',
+        //   'title': 'Catalog',
+        //   'payload': 'catalog'
+        // }
       ]
     }
   ])
