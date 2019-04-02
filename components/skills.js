@@ -201,7 +201,7 @@ module.exports = function (controller) {
   controller.on('message_received', function (bot, message) {
     if (message.quick_reply) {
       if (message.quick_reply.payload.length === 13 && message.quick_reply.payload[0] === '+') {
-        require('./fix_phone.js')(message)
+        // require('./fix_phone.js')(message)
         bot.reply(message, {
           'text': 'Please share your location for delivery',
           // 'quick_replies': [{ 'content_type': 'location' }, backToMainMenuButton]
@@ -264,7 +264,7 @@ module.exports = function (controller) {
 
   controller.on('message_received', function (bot, message) {
     if (message.attachments && message.attachments[0].type === 'location') {
-      require('./fix_coordinates.js')(message)
+      // require('./fix_coordinates.js')(message)
       bot.reply(message, {
         'text': 'Congratulations! Our courier will contact you within 2 hours',
         // 'quick_replies': [backToMainMenuButton, showCatalogButton]
